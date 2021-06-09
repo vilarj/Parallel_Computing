@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "mvp.h"
+
+void assignMatrix2(double** mat, double* vec, int n) {
+    for (int i = 0; i < n; i++) {
+        vec[i] = 1;
+    }
+}
+
+void assignMatrix1(double* mat, double* vec, int n) {
+
+} 
+
+void printMatVec2(double** mat, double* vec, double* res, int n) {
+
+}
+
+void printMatVec1(double* mat, double* vec, double* res, int n) {
+    
+}
+
+double* mvp1(double* mat, double* vec, int n) {
+    return 0;
+}
+
+double* mvp2(double** mat, double* vec, int n) {
+    return 0;
+}
+
+void freeMatrix(void **mat, int n) {
+    
+}
+
+//Main function
+int main(int argc, char **argv) {
+    double* vec;
+    double** mat2;
+
+    int n=5;
+
+    printf("Matrix-Vector product using int** matrix:\n");
+
+    vec  = (double*) malloc(n * sizeof(double*));
+    mat2 = (double**) malloc(n * sizeof(double**));
+
+    for(int i=0;i<n;i++)
+        mat2[i] =   USE malloc to allocate space for the second dimension
+
+    assignMatrix2(mat2,vec,n);
+
+    double* resms = mvp2(mat2,vec,n);
+    
+    printMatVec2(mat2,vec,resms,n);
+    printf("\n");
+    freeMatrix((void**)mat2,n);
+
+    printf("Matrix-Vector product using int* matrix:\n");
+    
+    double* mat1;
+    mat1 = (double*) malloc(n*n*sizeof(double));
+
+    assignMatrix1(mat1, vec, n);
+    double* res=mvp1(mat1, vec, n);
+    printMatVec1(mat1, vec, res, n);
+    printf("\n");
+
+    free(mat1);
+    free(vec);
+    free(resms);
+
+    return 0;
+}
