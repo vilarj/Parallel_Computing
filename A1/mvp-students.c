@@ -3,6 +3,7 @@
 #include "mvp.h"
 
 void assignMatrix2(double** mat, double* vec, int n) {
+    // TODO: 
     for (int i = 0; i < n; i++) {
         vec[i] = 1;
     }
@@ -22,7 +23,7 @@ void assignMatrix1(double* mat, double* vec, int n) {
 } 
 
 void printMatVec2(double** mat, double* vec, double* res, int n) {
-
+    // TODO: 
 }
 
 void printMatVec1(double* mat, double* vec, double* res, int n) {
@@ -36,15 +37,28 @@ void printMatVec1(double* mat, double* vec, double* res, int n) {
 }
 
 double* mvp1(double* mat, double* vec, int n) {
-    return 0;
+    double *resms = (double*) malloc(n * sizeof(double*));
+    double sum = 0;
+
+    for (int i = 0; i < n; i++) {
+        sum = 0;
+
+        for (int k = 0; k < n; k++) {
+            sum += mat[i * n + k] *  vec[k];
+        }
+        resms[i] = sum;
+    }
+
+    return resms;
 }
 
 double* mvp2(double** mat, double* vec, int n) {
+    // TODO: 
     return 0;
 }
 
 void freeMatrix(void **mat, int n) {
-    
+    // TODO: 
 }
 
 //Main function
