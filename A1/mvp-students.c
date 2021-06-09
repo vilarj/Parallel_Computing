@@ -26,7 +26,13 @@ void printMatVec2(double** mat, double* vec, double* res, int n) {
 }
 
 void printMatVec1(double* mat, double* vec, double* res, int n) {
-    
+    for (int i = 0; i < n; i++) {
+        for (int k = 0; k < n; k++) {
+            printf("%5.2f ", mat[i * n * k]);
+        }
+        if(i == n/2) {printf("  %5.2f = %5.2f\n", vec[i], res[i]);}
+        else {printf("  %5.2f   %5.2f\n", vec[i], res[i]);}
+    }
 }
 
 double* mvp1(double* mat, double* vec, int n) {
