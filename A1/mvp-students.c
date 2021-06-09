@@ -9,7 +9,16 @@ void assignMatrix2(double** mat, double* vec, int n) {
 }
 
 void assignMatrix1(double* mat, double* vec, int n) {
+    for (int i = 0; i < n; i++) {
+        vec[i] = 1;
 
+        for (int k = 0; k < n; k++) {
+            if (i == k) {mat[i * n + k] = 2;}
+            else if (k == i+1) {mat[i * n + k] = 1; }
+            else if (k == i-1) {mat[i * n + k] = 1;}
+            else {mat[i * n + k] = 0;}
+        }
+    }
 } 
 
 void printMatVec2(double** mat, double* vec, double* res, int n) {
@@ -45,7 +54,7 @@ int main(int argc, char **argv) {
     mat2 = (double**) malloc(n * sizeof(double**));
 
     for(int i=0;i<n;i++)
-        mat2[i] =   USE malloc to allocate space for the second dimension
+        mat2[i] =  (double**) malloc(n * sizeof(double**));
 
     assignMatrix2(mat2,vec,n);
 
