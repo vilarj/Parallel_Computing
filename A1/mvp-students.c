@@ -3,9 +3,15 @@
 #include "mvp.h"
 
 void assignMatrix2(double** mat, double* vec, int n) {
-    // TODO: 
     for (int i = 0; i < n; i++) {
         vec[i] = 1;
+
+        for (int k = 0; k < n; k++) {
+            if (i == k) {mat[i][k] = 2;}
+            else if (k == i+1) {mat[i][k] = 1;}
+            else if (k == i-1) {mat[i][k] = 1;}
+            else {mat[i][k] = 0;}
+        } 
     }
 }
 
@@ -23,7 +29,13 @@ void assignMatrix1(double* mat, double* vec, int n) {
 } 
 
 void printMatVec2(double** mat, double* vec, double* res, int n) {
-    // TODO: 
+    for (int i = 0; i < n; i++) {
+        for (int k = 0; i < n; k++) {printf("%5.2f ", mat[i][k]);}
+        
+        if (i == n/2) {printf("%5.2f = %5.2f \n", vec[i], res[i]);}
+        else {printf("%5.2f     %5.2f\n", vec[i], res[i]);}
+    }
+    
 }
 
 void printMatVec1(double* mat, double* vec, double* res, int n) {
@@ -43,9 +55,7 @@ double* mvp1(double* mat, double* vec, int n) {
     for (int i = 0; i < n; i++) {
         sum = 0;
 
-        for (int k = 0; k < n; k++) {
-            sum += mat[i * n + k] *  vec[k];
-        }
+        for (int k = 0; k < n; k++) {sum += mat[i * n + k] *  vec[k];}
         resms[i] = sum;
     }
 
@@ -53,12 +63,14 @@ double* mvp1(double* mat, double* vec, int n) {
 }
 
 double* mvp2(double** mat, double* vec, int n) {
-    // TODO: 
-    return 0;
+    double *resms = (double*) malloc(n * sizeof(double));
+    
+
+    return resms;
 }
 
 void freeMatrix(void **mat, int n) {
-    // TODO: 
+    for (int i = 0; i < n; i++) {free(mat);}
 }
 
 //Main function
