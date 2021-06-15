@@ -64,7 +64,15 @@ double* mvp1(double* mat, double* vec, int n) {
 
 double* mvp2(double** mat, double* vec, int n) {
     double *resms = (double*) malloc(n * sizeof(double));
-    
+    double sum = 0;
+
+    for (int i = 0; i < n; i++) {
+        sum = 0;
+
+        for (int k = 0; k < n; k++) {sum += mat[i][k] * vec[k];}
+
+        resms[i] = sum;
+    }
 
     return resms;
 }
@@ -82,11 +90,10 @@ int main(int argc, char **argv) {
 
     printf("Matrix-Vector product using int** matrix:\n");
 
-    vec  = (double*) malloc(n * sizeof(double*));
-    mat2 = (double**) malloc(n * sizeof(double**));
+    vec  = (double*) malloc(n * sizeof(double));
+    mat2 = (double**) malloc(n * sizeof(double));
 
-    for(int i=0;i<n;i++)
-        mat2[i] =  (double**) malloc(n * sizeof(double**));
+    for(int i=0;i<n;i++) {mat2[i] = (double*) malloc(n * sizeof(double));}
 
     assignMatrix2(mat2,vec,n);
 
