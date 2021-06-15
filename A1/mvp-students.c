@@ -30,12 +30,11 @@ void assignMatrix1(double* mat, double* vec, int n) {
 
 void printMatVec2(double** mat, double* vec, double* res, int n) {
     for (int i = 0; i < n; i++) {
-        for (int k = 0; i < n; k++) {printf("%5.2f ", mat[i][k]);}
+        for (int k = 0; k < n; k++) {printf("%5.2f ", mat[i][k]);}
         
         if (i == n/2) {printf("%5.2f = %5.2f \n", vec[i], res[i]);}
         else {printf("%5.2f     %5.2f\n", vec[i], res[i]);}
     }
-    
 }
 
 void printMatVec1(double* mat, double* vec, double* res, int n) {
@@ -78,7 +77,7 @@ double* mvp2(double** mat, double* vec, int n) {
 }
 
 void freeMatrix(void **mat, int n) {
-    for (int i = 0; i < n; i++) {free(mat);}
+    for (int i = 0; i < n; i++) {free(mat[i]);}
 }
 
 //Main function
