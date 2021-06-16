@@ -7,4 +7,4 @@
 
 #cat $PBS_NODEFILE
 cd ~/assignments/A2/
-mpiexec -np 2 --map-by ppr:1:node --hostfile $PBS_NODEFILE exe
+mpiexec -np 2 --map-by ppr:1:node --hostfile $PBS_NODEFILE ./mpi
