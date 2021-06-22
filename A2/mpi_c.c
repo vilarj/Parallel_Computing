@@ -15,7 +15,7 @@ int main(int argc, char **argv){
 
         for (int i = 1; i < numranks; i++) {
             MPI_Send(data, elements, MPI_INT, i, tag, MPI_COMM_WORLD);
-            MPI_Recv(data, elements, MPI_INT, i, tag, MPI_COMM_WORLD);
+            MPI_Recv(data, elements, MPI_INT, i, tag, MPI_COMM_WORLD, &stat);
         }
       
         double end = MPI_Wtime();
@@ -23,6 +23,7 @@ int main(int argc, char **argv){
 
         printf("Average time is: %f\n", avr);
     } 
+    
     else {
         MPI_Recv(&data, 1, MPI_INT, 0, tag, MPI_COMM_WORLD,&stat);
         MPI_Send(&data, 1, MPI_INT, 0, tag, MPI_COMM_WORLD);
