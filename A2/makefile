@@ -2,7 +2,7 @@ FCC = gcc
 LDC = gcc
 LD_FLAG = -g
 FLAG = -g
-PROG = mvp-student.cx
+PROG = mpi_a.cx
 RM = /bin/rm
 
 OBJS = mvp-student.o

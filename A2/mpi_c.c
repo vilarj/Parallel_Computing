@@ -18,14 +18,14 @@ int main(int argc, char **argv){
             MPI_Recv(data, elements, MPI_INT, i, tag, MPI_COMM_WORLD);
         }
       
-      double end = MPI_Wtime();
-      double avr = (begging + end) / numranks;
+        double end = MPI_Wtime();
+        double avr = (beggining + end) / numranks;
 
-      printf("Average time is: %f\n", avr);
+        printf("Average time is: %f\n", avr);
     } 
     else {
-       MPI_Recv(&number, 1, MPI_INT, 0, tag, MPI_COMM_WORLD,&stat);
-       MPI_Send(&number, 1, MPI_INT, 0, tag, MPI_COMM_WORLD);
+        MPI_Recv(&data, 1, MPI_INT, 0, tag, MPI_COMM_WORLD,&stat);
+        MPI_Send(&data, 1, MPI_INT, 0, tag, MPI_COMM_WORLD);
     }
 
     MPI_Finalize();
