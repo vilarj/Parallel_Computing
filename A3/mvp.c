@@ -24,8 +24,8 @@ int main(int argc, char *argv[]){
      */
     if(rank==0){
         mat = (int) malloc( (N*N) * sizeof(int);
-        res = (double*) malloc((N*N) * sizeof(double));
-        vec = (double*) malloc((N*N) * sizeof(double));
+        res = (double*) malloc(N * sizeof(double));
+        vec = (double*) malloc(N * sizeof(double));
     }
 
 
