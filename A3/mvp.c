@@ -23,9 +23,9 @@ int main(int argc, char *argv[]){
      *  ALLOCATE SPACE
      */
     if(rank==0){
-        mat = TODO_1   allocate N*N doubles
-        res = TODO_2   allocate space for the result
-        vec = TODO_3   allocate space for the vector
+        mat = (int) malloc( (N*N) * sizeof(int);
+        res = (double*) malloc((N*N) * sizeof(double));
+        vec = (double*) malloc((N*N) * sizeof(double));
     }
 
 
@@ -74,12 +74,12 @@ int main(int argc, char *argv[]){
      * 7th: WHO SCATERS THE DATA? This Rank!  Everyone else is a receiver (including ourselves).
      * 8th: Our Communicator.
      */
-    MPI_Scatter(  TODO_4   );
+    MPI_Scatter(  TODO_4   ); // MPI_Scatter (&sendbuf,sendcnt,sendtype,&recvbuf,recvcnt,recvtype,root,comm)
 
     /*
      * EVERYONE NEEDS THE VECTOR (How else are you going to perform the multiplication?)
      */
-    TODO_5   Broadcast the vec to everyone
+    TODO_5   // MPI_Bcast (&buffer,count,datatype,root,comm) Broadcast the vec to everyone
 
     double endcomm=MPI_Wtime();
 
@@ -110,7 +110,8 @@ int main(int argc, char *argv[]){
      */
     
     double startgather=MPI_Wtime();
-    MPI_Gather(   TODO_6   );
+    MPI_Gather(   TODO_6   ); // MPI_Gather (&sendbuf,sendcnt,sendtype,&recvbuf,recvcount,recvtype,root,comm)
+
     double endgather=MPI_Wtime();
 
 
