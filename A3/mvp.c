@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
      *  ALLOCATE SPACE
      */
     if(rank==0){
-        mat = (int) malloc( (N*N) * sizeof(int);
+        mat = (double*) malloc( (N*N) * sizeof(double);
         res = (double*) malloc(N * sizeof(double));
         vec = (double*) malloc(N * sizeof(double));
     }
