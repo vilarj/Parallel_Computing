@@ -6,6 +6,10 @@ void assignMatrix(double* mat, double* vec, int n);
 void printMatVec(double* mat, double* vec, double* res, int n);
 double* mvp(double* mat, double* vec, int n, int m);
 
+/*
+n * n matrix -> formula:
+2 * n^2 - n
+*/
 int main(int argc, char *argv[]){
 
     MPI_Init(&argc, &argv);
@@ -16,23 +20,23 @@ int main(int argc, char *argv[]){
     double *vec;    // The Vector
     double *mat;    // The Matrix
     double *res;    // The Result
-    int N=30000;    // Dimension 
+    int N=4;    // Dimension -> actual: N = 30000 
 
 
     /*
      *  ALLOCATE SPACE
      */
     if(rank==0){
-        mat = (double*) malloc( (N*N) * sizeof(double);
-        res = (double*) malloc(N * sizeof(double));
-        vec = (double*) malloc(N * sizeof(double));
+        mat = (double*) malloc( (N*N) * sizeof(double) );
+        res = (double*) malloc(N * sizeof(double) );
     }
 
+    vec = (double*) malloc(N * sizeof(double) );
 
     /*
      * COMPUTE WHAT EACH RANK SHOULD DO
      */
-    int myrows=0;       
+    int myrows=0;    
 
     if( N % numranks!=0 ){
         if(rank==0){
@@ -42,7 +46,7 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
-    myrows = N / numranks;          // if N is 30,000 then myrows is 30000/10 = 3000 (for 10 rank configuration)
+    myrows = N / numranks; // if N is 30,000 then myrows is 30000/10 = 3000 (for 10 rank configuration)
     printf("Rank %d, myrows=%d\n", rank, myrows);
 
     
@@ -75,12 +79,15 @@ int main(int argc, char *argv[]){
      * 8th: Our Communicator.
      */
 
-    MPI_Scatter(mat, (myrows*N), MPI_DOUBLE, mymat, (myrows*N), MPI_DOUBLE, 0, MPI_COMP_WORLD); // MPI_Scatter (&sendbuf,sendcnt,sendtype,&recvbuf,recvcnt,recvtype,root,comm)
+    // MPI_Scatter (&sendbuf,sendcnt,sendtype,&recvbuf,recvcnt,recvtype,root,comm)
+    MPI_Scatter(mat, (myrows*N), MPI_DOUBLE, mymat, (myrows*N), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     /*
      * EVERYONE NEEDS THE VECTOR (How else are you going to perform the multiplication?)
      */
-    MPI_Bcast(vec, N, MPI_DOUBLE, 0, MPI_COMP_WORLD);   // MPI_Bcast (&buffer,count,datatype,root,comm) Broadcast the vec to everyone
+
+    // MPI_Bcast (&buffer,count,datatype,root,comm) Broadcast the vec to everyone
+    MPI_Bcast(vec, N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     double endcomm=MPI_Wtime();
 
@@ -90,7 +97,7 @@ int main(int argc, char *argv[]){
      * The multiplication is the same **BUT** on a different subset of the matrix.
      */
     double start=MPI_Wtime();
-    double* myres = mvp(mymat,vec,N,myrows);  // The matrix looks like  3000 x 30000 instead of 30000 x 30000
+    double* myres = mvp(mymat, vec, N, myrows);  // The matrix looks like  3000 x 30000 instead of 30000 x 30000
     double end=MPI_Wtime();
 
     
@@ -111,10 +118,10 @@ int main(int argc, char *argv[]){
      */
     
     double startgather=MPI_Wtime();
-    MPI_Gather(   TODO_6   ); // MPI_Gather (&sendbuf,sendcnt,sendtype,&recvbuf,recvcount,recvtype,root,comm)
+    // MPI_Gather (&sendbuf,sendcnt,sendtype,&recvbuf,recvcount,recvtype,root,comm)
+    MPI_Gather(myres, myrows, MPI_DOUBLE, res, myrows, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     double endgather=MPI_Wtime();
-
 
     double endFull=MPI_Wtime();
     if(rank==0){
