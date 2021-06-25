@@ -74,12 +74,13 @@ int main(int argc, char *argv[]){
      * 7th: WHO SCATERS THE DATA? This Rank!  Everyone else is a receiver (including ourselves).
      * 8th: Our Communicator.
      */
-    MPI_Scatter(  TODO_4   ); // MPI_Scatter (&sendbuf,sendcnt,sendtype,&recvbuf,recvcnt,recvtype,root,comm)
+
+    MPI_Scatter(mat, (myrows*N), MPI_DOUBLE, mymat, (myrows*N), MPI_DOUBLE, 0, MPI_COMP_WORLD); // MPI_Scatter (&sendbuf,sendcnt,sendtype,&recvbuf,recvcnt,recvtype,root,comm)
 
     /*
      * EVERYONE NEEDS THE VECTOR (How else are you going to perform the multiplication?)
      */
-    TODO_5   // MPI_Bcast (&buffer,count,datatype,root,comm) Broadcast the vec to everyone
+    MPI_Bcast(vec, N, MPI_DOUBLE, 0, MPI_COMP_WORLD);   // MPI_Bcast (&buffer,count,datatype,root,comm) Broadcast the vec to everyone
 
     double endcomm=MPI_Wtime();
 
