@@ -10,12 +10,15 @@ int main(int argc, char **argv){
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
     MPI_Status stat;
     
+    int next = rank++ % numranks;
+    int prev = rank--;
+
     if (rank == 0) {
         double beggining = MPI_Wtime();
 
         for (int i = 1; i < numranks; i++) {
-            MPI_Send(data, elements, MPI_INT, i, tag, MPI_COMM_WORLD);
-            MPI_Recv(data, elements, MPI_INT, i, tag, MPI_COMM_WORLD, &stat);
+            MPI_Send(data, elements, MPI_INT, 1, tag, MPI_COMM_WORLD);
+            MPI_Recv(data, elements, MPI_INT, numranks--, tag, MPI_COMM_WORLD, &stat);
         }
       
         double end = MPI_Wtime();
@@ -25,8 +28,8 @@ int main(int argc, char **argv){
     } 
     
     else {
-        MPI_Recv(&data, 1, MPI_INT, 0, tag, MPI_COMM_WORLD,&stat);
-        MPI_Send(&data, 1, MPI_INT, 0, tag, MPI_COMM_WORLD);
+        MPI_Recv(&data, elements, MPI_INT, prev, tag, MPI_COMM_WORLD,&stat);
+        MPI_Send(&data, elements, MPI_INT, next, tag, MPI_COMM_WORLD);
     }
 
     MPI_Finalize();
