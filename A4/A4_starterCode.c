@@ -24,7 +24,7 @@ int main(int argc, char** argv){
      *      and places the data in the variable N.
      * 5th. Our communicator.
      */
-    MPI_Bcast( &N, 1, MPI_INT, 0, MPI_COMM_WORLD); 
+    MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD); 
 
     int *a;           // Our first Vector
     int *b;           // Our second Vector
@@ -33,10 +33,11 @@ int main(int argc, char** argv){
      * but only Rank 0 allocates space for them, and then
      * initializes them in the "for" loop.
      */
-    if( rank == 0 ){
+    if( rank == 0 ) {
         a = (int *) malloc( N*sizeof(int) );
         b = (int *) malloc( N*sizeof(int) );
-        for(int i=0; i<N; i++){
+
+        for(int i=0; i<N; i++) {
             a[i] = b[i] = 2;
         }
     }
@@ -52,7 +53,7 @@ int main(int argc, char** argv){
      * Allocates counts and displacements for all ranks
      */
     int *sendcounts = (int*) (myN * malloc(sizeof(int)) );
-    int *disp =        TODO_3
+    int *disp = (int*) (myN * malloc(sizeof(int)))
 
     /*
      * Compute Counts
@@ -72,8 +73,7 @@ int main(int argc, char** argv){
     /*
      * Compute displacements
      */
-    disp[0]=   TODO_4
-
+    disp[0] = disp[1] + sendcounts[1]; // TODO: check this
 
 
     /*
@@ -93,8 +93,8 @@ int main(int argc, char** argv){
      *        into the mya and myb buffers.
      *
      */
-    MPI_Scatterv(a,_,_,_,_,_,_,0,MPI_COMM_WORLD);      TODO_5    (fill in the blanks)
-    MPI_Scatterv(b,_,_,_,_,_,_,0,MPI_COMM_WORLD);      TODO_6    (fill in the blanks)
+    MPI_Scatterv(a, sendcounts, disp, MPI_INT, mya, sendcounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatterv(b, sendcounts, disp, MPI_INT, myb, sendcounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
 
     /*
      * Do dot product
@@ -108,8 +108,6 @@ int main(int argc, char** argv){
         result+=mya[i]*myb[i];
     }
 
-
-
     /*
      * Now that every node computed a partial dot product, and this partial dot product
      * is stored in the variable 'result' we need to send all these partial results
@@ -117,11 +115,7 @@ int main(int argc, char** argv){
      * We can use MPI_Reduce or MPI_Allreduce to send the final result to everyone.
      */
 
-    /* TODO_7: use MPI_Reduce or MPI_Allreduce, lets use MPI_Allreduce so that the 
-        next printf statement will work for every rank.
-    */
-    MPI_Allreduce(, &result, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
-
+    MPI_Allreduce(, &result, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD); // TODO: Check the value for result: May be the variable not the value
 
     printf("Rank: %d, Result: %d\n",rank,result);
 
