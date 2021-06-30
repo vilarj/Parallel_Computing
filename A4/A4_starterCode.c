@@ -10,7 +10,7 @@ int main(int argc, char** argv){
 
     int N;          // size of our vectors
     if(rank==0) {
-        N=1000;     // Only Rank 0 knows the size of the vectors
+        N = 1000;     // Only Rank 0 knows the size of the vectors
     }
 
     /*
@@ -45,14 +45,14 @@ int main(int argc, char** argv){
     /*
      * How large each chunk will be?
      */
-    int myN=  TODO_1              
+    int myN = N / numranks;        
 
 
     /*
      * Allocates counts and displacements for all ranks
      */
-    int *sendcounts=  TODO_2
-    int *disp=        TODO_3
+    int *sendcounts = (int*) (myN * malloc(sizeof(int)) );
+    int *disp =        TODO_3
 
     /*
      * Compute Counts
