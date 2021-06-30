@@ -1,0 +1,19 @@
+
+1) What is the approximate maximum matrix dimension that you can use? Don't run with this matrix dimension, it may take$
+I think that the max dimension that we can have is this interval ~40,000 < ~45,000.
+
+2) Plot (using whatever software you want) the number of ranks vs. time to solution (include this in your pdf) - don't $
+Enter to this link to see the graph rank vs time: https://docs.google.com/document/d/11ToGuclt4mxt9ytfvzJMT-TrO6mqjEiJq$
+
+3) Plot the communication time for all communication that you perform vs. the dimensions of the matrix. Compare the com$
+Enter to the link from above to see the graph communication vs dimensions
+
+4) Generally speaking, a Floating Point Operation is a single multiply or a single addition (although this varies based$* Rank = 10:
+N = 30,000
+FLOPS = 6143050074.806319
+-------------------------
+N = 35,000
+FLOPS = 6569645451.746625
+-------------------------
+N = 40,000
+FLOPS: 6263684835.415782
