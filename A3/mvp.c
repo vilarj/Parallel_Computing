@@ -20,8 +20,8 @@ int main(int argc, char *argv[]){
     double *vec;    // The Vector
     double *mat;    // The Matrix
     double *res;    // The Result
-    int N=4;    // Dimension -> actual: N = 30000 
-
+    int N = 30000;    // Dimension -> actual: N = 30000 
+    double FLOP = 2.0 * (N*N) - N;
 
     /*
      *  ALLOCATE SPACE
@@ -124,17 +124,18 @@ int main(int argc, char *argv[]){
     double endgather=MPI_Wtime();
 
     double endFull=MPI_Wtime();
+   
     if(rank==0){
         printf("Num Ranks=%d\n",numranks);
         printf("MVP Runtime: %f\n",end-start);
         printf("Initial Communication: %f\n",endcomm-startcomm);
         printf("Final Gather: %f\n",endgather-startgather);
         printf("Full time: %f\n",endFull-startFull);
+        printf("FLOPS: %f\n", FLOP/(end-start));
 
         free(mat);
         free(res);
     }
-
     MPI_Finalize();
 
 
