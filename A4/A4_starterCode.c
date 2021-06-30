@@ -117,9 +117,10 @@ int main(int argc, char** argv){
      * We can use MPI_Reduce or MPI_Allreduce to send the final result to everyone.
      */
 
-    TODO_7   use MPI_Reduce or MPI_Allreduce, lets use MPI_Allreduce so that the 
-             next printf statement will work for every rank.
-
+    /* TODO_7: use MPI_Reduce or MPI_Allreduce, lets use MPI_Allreduce so that the 
+        next printf statement will work for every rank.
+    */
+    MPI_Allreduce(, &result, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
 
 
     printf("Rank: %d, Result: %d\n",rank,result);
