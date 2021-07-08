@@ -48,7 +48,6 @@ int main(int argc, char** argv){
      */
     int myN = N / numranks;        
 
-
     /*
      * Allocates counts and displacements for all ranks
      */
@@ -88,9 +87,9 @@ int main(int argc, char** argv){
      * Scatterv both vectors
      * Everyone runs these two Scatterv()
      * Rank 0 performs the Scattering of the data (gets vectors 'a' and 'b'
-     *        splits them up based on the sendcounts and send the chunks to
-     *        everyother rank.  Everyother rank will receive the scattered data
-     *        into the mya and myb buffers.
+     * splits them up based on the sendcounts and send the chunks to
+     * everyother rank.  Everyother rank will receive the scattered data
+     * into the mya and myb buffers.
      *
      */
     MPI_Scatterv(a, sendcounts, disp, MPI_INT, mya, sendcounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
