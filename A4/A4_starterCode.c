@@ -53,7 +53,7 @@ int main(int argc, char** argv){
      * Allocates counts and displacements for all ranks
      */
     int *sendcounts = (int*) (myN * malloc(sizeof(int)) );
-    int *disp = (int*) (myN * malloc(sizeof(int)))
+    int *disp = (int*) (myN * malloc(sizeof(int)));
 
     /*
      * Compute Counts
@@ -104,8 +104,8 @@ int main(int argc, char** argv){
      * THIS IS WHERE PARALLELISM IMPROVES PERFORMANCE (same problem but smaller dataset)
      */
     int result=0;
-    for(int i=0;i<sendcounts[rank];i++){
-        result+=mya[i]*myb[i];
+    for(int i = 0; i < sendcounts[rank]; i++){
+        result += mya[i]*myb[i];
     }
 
     /*
@@ -115,7 +115,7 @@ int main(int argc, char** argv){
      * We can use MPI_Reduce or MPI_Allreduce to send the final result to everyone.
      */
 
-    MPI_Allreduce(, &result, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD); // TODO: Check the value for result: May be the variable not the value
+    MPI_Allreduce(, result, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD); // TODO: first argument
 
     printf("Rank: %d, Result: %d\n",rank,result);
 
