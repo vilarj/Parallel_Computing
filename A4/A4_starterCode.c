@@ -10,7 +10,7 @@ int main(int argc, char** argv){
 
     int N;          // size of our vectors
     if(rank==0) {
-        N = 1000;     // Only Rank 0 knows the size of the vectors
+        N = 10;     // Only Rank 0 knows the size of the vectors
     }
 
     /*
@@ -51,8 +51,8 @@ int main(int argc, char** argv){
     /*
      * Allocates counts and displacements for all ranks
      */
-    int *sendcounts = (int*) (myN * malloc(sizeof(int)) );
-    int *disp = (int*) (myN * malloc(sizeof(int)));
+    int *sendcounts = (int*) malloc(numranks * sizeof(int));
+    int *disp = (int*) malloc(numranks * sizeof(int));
 
     /*
      * Compute Counts
@@ -72,7 +72,11 @@ int main(int argc, char** argv){
     /*
      * Compute displacements
      */
-    disp[0] = disp[1] + sendcounts[1]; // TODO: check this
+    disp[0] = 0;
+
+    for (int i = 1; i < numranks; i++) {
+        disp[i] = disp[numranks-1] + sendcounts[i-1];
+    }
 
 
     /*
@@ -114,7 +118,7 @@ int main(int argc, char** argv){
      * We can use MPI_Reduce or MPI_Allreduce to send the final result to everyone.
      */
 
-    MPI_Allreduce(, result, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD); // TODO: first argument
+    MPI_Allreduce(MPI_IN_PLACE, &result, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
 
     printf("Rank: %d, Result: %d\n",rank,result);
 

@@ -19,20 +19,30 @@ int main(int argc, char** argv){
     MPI_Init(&argc,&argv);
     MPI_Comm_size(MPI_COMM_WORLD,&numranks);
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
-    int n;
+    int n, elements, start, end, result;
     int numprimes = 0;
 
     if (rank == 0) {
         n = 10000000;
     }
+    
+    MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+    elements = n / numranks;
+    start = rank * elements;
+    end = start + (elements - 1);
 
     for (int i = 1; i <= n; i++) {
         if (is_prime(i) == 1) {numprimes++;}
     }
 
+    result = 0;
 
+    MPI_Reduce(&numprimes, &result, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
-    printf("Number of Primes: %d\n", numprimes);
+    if (rank == 0) {printf("Number of Primes: %d\n", numprimes);}
+
+    MPI_Finalize();
 }
 
 int is_prime(int n) {
