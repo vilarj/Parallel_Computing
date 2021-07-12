@@ -96,9 +96,12 @@ int main(int argc, char** argv){
      * into the mya and myb buffers.
      *
      */
-    MPI_Scatterv(a, sendcounts, disp, MPI_INT, mya, sendcounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Scatterv(b, sendcounts, disp, MPI_INT, myb, sendcounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
+    // uncomment Scatterv if needed. However, Scatterv and Scatter are meant to be compared timewise
+    //MPI_Scatterv(a, sendcounts, disp, MPI_INT, mya, sendcounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
+    //MPI_Scatterv(b, sendcounts, disp, MPI_INT, myb, sendcounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
 
+    MPI_Scatter(a, sendcounts, disp, MPI_INT, mya, sendcounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatter(b, sendcounts, disp, MPI_INT, myb, sendcounts[rank], MPI_INT, 0, MPI_COMM_WORLD);
     /*
      * Do dot product
      * PLEASE NOTE HERE.  The computation of this partial dot product is the same.
