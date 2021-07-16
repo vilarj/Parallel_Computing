@@ -35,22 +35,20 @@ int main( int argc, char** argv ) {
     /*
      * TODO 1   Bcast the dimensions of the image
      */
-
+    MPI_Bcast(dims, 2, MPI_INT, 0, MPI_COMM_WORLD);
 
     /*
      * Everyone else (except rank 0) must allocate space to store 
      * the image.
      */
     if(rank!=0){
-	// TODO 2
+        matrix = (int*) malloc(dims[0]*dims[1] * sizeof(int));
     }
 
     /*
      * Rank 0 Bcasts the image to everyone
      */
-    // TODO 3
-
-
+    MPI_Bcast(matrix, dims[0]*dims[1], MPI_INT, 0, MPI_COMM_WORLD);
 
     /*
     if(dims[1]%numranks!=0){
@@ -77,17 +75,11 @@ int main( int argc, char** argv ) {
         myRowEnd=height-1;
     }
 
-
-
-
     temp=(int*)malloc(numrows*width*sizeof(int));
     if(rank==0){
         printf("Total Dims %d %d\n",dims[0],dims[1]);
     }
     printf("Rank %d: myRowStart: %d myRowEnd: %d\n",rank,myRowStart,myRowEnd);
-
-
-
 
     //create gaussian filter on each rank
     //double gKernel[5][5];
@@ -108,9 +100,6 @@ int main( int argc, char** argv ) {
             printf("\n");
         }
     }
-
-
-
 
     /*
      *       CONVOLVE
