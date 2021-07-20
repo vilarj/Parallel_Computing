@@ -68,8 +68,8 @@ int main( int argc, char** argv ) {
     int width=dims[1];
     int numrows=dims[0]/numranks;
 
-    int myRowStart=   // TODO 4   Based on your own rank compute the starting row
-    int myRowEnd=     // TODO 5   Based on your own rank compute the end row
+    int myRowStart =  // TODO 4   Based on your own rank compute the starting row
+    int myRowEnd =  // TODO 5   Based on your own rank compute the end row
 
     if(rank==numranks-1){
         myRowEnd=height-1;
@@ -113,6 +113,31 @@ int main( int argc, char** argv ) {
      *     ->  Pay attention to the for loop limits and the way you 
      *         compute the temp[]
      */
+    double sum=0;
+    int matval=0;
+
+    for(int i=0;i<height;i++){
+        for(int j=0;j<width;j++){
+            sum=0;
+            int count=0;
+            for(int ii=-range;ii<=range;ii++){
+                for(int jj=-range;jj<=range;jj++){
+                    if(i+ii<0 || j+jj<0 || i+ii>height-1 || j+jj>width-1){
+                        //matval=127;
+                        continue;
+                    }else{
+                        matval=matrix[(i+ii)*width+(j+jj)];
+                    }
+                    count++;
+                    sum=sum+gKernel[ii+range][jj+range]*matval;
+                }
+            }
+
+            
+            temp[i*width+j]=sum;
+
+        }
+    }
 
     double endTime=MPI_Wtime();
 
@@ -121,7 +146,7 @@ int main( int argc, char** argv ) {
      *
      * Use MPI_Gather() to gather all small temp matrices into the full matrix on rank 0
      */
-    MPI_Gather();
+    MPI_Gather(&temp, dims, MPI_INT, temp, dims, MPI_INT, 0, MPI_COMM_WORLD);
 
     double fullend=MPI_Wtime();
 
@@ -129,10 +154,10 @@ int main( int argc, char** argv ) {
 
     //rank 0 writes image to file
     if(rank==0){
-
         printf("Full Time: %5.2f\n",fullend-fullstart);
         matToImage("processedImage.jpg",matrix,dims);
     }
+
     MPI_Finalize();
     return 0;
 }
