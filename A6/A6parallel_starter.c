@@ -42,15 +42,16 @@ int main( int argc, char** argv ) {
      * the image.
      */
     if(rank!=0){
+	// TODO 2
         matrix = (int*) malloc(dims[0]*dims[1] * sizeof(int));
     }
 
     /*
      * Rank 0 Bcasts the image to everyone
      */
+    // TODO 3
     MPI_Bcast(matrix, dims[0]*dims[1], MPI_INT, 0, MPI_COMM_WORLD);
 
-    /*
     if(dims[1]%numranks!=0){
         if(rank==0){
             printf("height dim is not divisable by numranks: %d %d\n",dims[1],numranks);
@@ -58,7 +59,6 @@ int main( int argc, char** argv ) {
         MPI_Finalize();
         return 0;
     }
-    */
 
     /*
      * temp will be the size of the computed pixels for each rank
@@ -76,6 +76,7 @@ int main( int argc, char** argv ) {
     }
 
     temp=(int*)malloc(numrows*width*sizeof(int));
+
     if(rank==0){
         printf("Total Dims %d %d\n",dims[0],dims[1]);
     }
@@ -112,7 +113,7 @@ int main( int argc, char** argv ) {
      *     ->  Pay attention to the for loop limits and the way you 
      *         compute the temp[]
      */
-
+    
 
 
 
