@@ -113,25 +113,15 @@ int main( int argc, char** argv ) {
      *     ->  Pay attention to the for loop limits and the way you 
      *         compute the temp[]
      */
-    
-
-
-
 
     double endTime=MPI_Wtime();
-
 
     /*
      * TODO 7
      *
      * Use MPI_Gather() to gather all small temp matrices into the full matrix on rank 0
      */
-
-
-
-
-
-
+    MPI_Gather();
 
     double fullend=MPI_Wtime();
 
@@ -146,8 +136,6 @@ int main( int argc, char** argv ) {
     MPI_Finalize();
     return 0;
 }
-
-
 
 void createBFilter(double **bKernel,int size){
     double sum=0.0;
@@ -166,7 +154,6 @@ void createBFilter(double **bKernel,int size){
             bKernel[i][j] /= sum;
 
 }
-
 
 void createFilter(double **gKernel,int size) { 
     int range=size/2;
