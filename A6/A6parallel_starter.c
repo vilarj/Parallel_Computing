@@ -69,7 +69,7 @@ int main( int argc, char** argv ) {
     int numrows=dims[0]/numranks;
 
     // TODO 4   Based on your own rank compute the starting row
-    int myRowStart = rank * rows; 
+    int myRowStart = rank * numrows; 
 
      // TODO 5   Based on your own rank compute the end row
     int myRowEnd = (myRowStart + myRowEnd) - 1;
