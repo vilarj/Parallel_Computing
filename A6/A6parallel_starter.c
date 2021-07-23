@@ -106,7 +106,7 @@ int main( int argc, char** argv ) {
     }
 
     /*
-     *       CONVOLVE
+     *    CONVOLVE
      *
      *    TODO 6
      *
@@ -120,7 +120,7 @@ int main( int argc, char** argv ) {
     double sum=0;
     int matval=0;
     
-    for(int i=myRowStart;i<myRowEnd;i++){
+    for(int i=myRowStart;i<=myRowEnd;i++){
         for(int j=0;j<width;j++){
             sum=0;
             int count=0;
