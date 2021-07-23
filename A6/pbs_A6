@@ -6,4 +6,4 @@
 #PBS -V
 
 cd ~/assignments/A6
-mpiexec -np 5 --map-by ppr:1:node --hostfile $PBS_NODEFILE
+mpiexec -np 5 --map-by ppr:1:node --hostfile $PBS_NODEFILE ./A6parallel_starter.cx

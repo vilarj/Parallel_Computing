@@ -1,7 +1,7 @@
-#include <stdlib.h>
+include <stdlib.h>
 #include <stdio.h>
 //#define __USE_MISC
-#include <math.h> 
+#include <math.h>
 #include <mpi.h>
 
 extern int* imageToMat(char* name, int* dims);
@@ -23,7 +23,6 @@ int main( int argc, char** argv ) {
     char *name="image.jpg";
     int *dims;
     dims=(int*) malloc(2*sizeof(int));
-
     /*
      * Assuming only Rank 0 has access to the image.
      */
@@ -35,22 +34,22 @@ int main( int argc, char** argv ) {
     /*
      * TODO 1   Bcast the dimensions of the image
      */
-    MPI_Bcast(dims, 2, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(dims,2,MPI_INT,0,MPI_COMM_WORLD);
 
     /*
-     * Everyone else (except rank 0) must allocate space to store 
+     * Everyone else (except rank 0) must allocate space to store
      * the image.
      */
     if(rank!=0){
-	// TODO 2
-        matrix = (int*) malloc(dims[0]*dims[1] * sizeof(int));
+            matrix = (int*) malloc(dims[0]*dims[1]*sizeof(int));
     }
 
     /*
      * Rank 0 Bcasts the image to everyone
      */
     // TODO 3
-    MPI_Bcast(matrix, dims[0]*dims[1], MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(matrix,dims[0]*dims[1],MPI_INT,0,MPI_COMM_WORLD);
+
 
     if(dims[1]%numranks!=0){
         if(rank==0){
@@ -66,35 +65,36 @@ int main( int argc, char** argv ) {
     int *temp;
     int height=dims[0];
     int width=dims[1];
-    int numrows=dims[0]/numranks;
-
-    // TODO 4   Based on your own rank compute the starting row
-    int myRowStart = rank * numrows; 
-
-     // TODO 5   Based on your own rank compute the end row
-    int myRowEnd = (myRowStart + myRowEnd) - 1;
+    int numrows=dims[0] / numranks;
+    int temp_dim = numrows * width;
+    int myRowStart = rank * numrows; // TODO 4   Based on your own rank compute the starting row
+    int myRowEnd = myRowStart + numrows;  // TODO 5   Based on your own rank compute the end row
 
     if(rank==numranks-1){
         myRowEnd=height-1;
     }
 
-    temp=(int*)malloc(numrows*width*sizeof(int));
 
+    temp=(int*)malloc(numrows*width*sizeof(int));
     if(rank==0){
         printf("Total Dims %d %d\n",dims[0],dims[1]);
     }
     printf("Rank %d: myRowStart: %d myRowEnd: %d\n",rank,myRowStart,myRowEnd);
 
+
+
+
     //create gaussian filter on each rank
     //double gKernel[5][5];
     int size=51;
     int range=size/2;
-    double *gKernel[size];
+    double **gKernel;
+    gKernel = (double**) malloc(size*sizeof(double));
     for (int i=0;i<size;i++){
         gKernel[i]=(double *)malloc(size*sizeof(double));
     }
-    // createBFilter(gKernel,size);
-    createFilter(gKernel,size);
+    createBFilter(gKernel,size);
+    //createFilter(gKernel,size);
 
     if(size<=5 && rank==0){ //then display filter
         for(int i = 0; i < size; ++i){
@@ -104,52 +104,50 @@ int main( int argc, char** argv ) {
             printf("\n");
         }
     }
-
     /*
-     *    CONVOLVE
+     *       CONVOLVE
      *
      *    TODO 6
      *
      *     Look at the image/convolution/convolve.c example
      *     which is part of the "Image Processing" lecture.
      *
-     *     ->  Pay attention to the for loop limits and the way you 
+     *     ->  Pay attention to the for loop limits and the way you
      *         compute the temp[]
      */
+    //convolve
+
     double startTime = MPI_Wtime();
     double sum=0;
     int matval=0;
-    
-    for(int i=myRowStart;i<=myRowEnd;i++){
+    for(int i=myRowStart;i<=myRowEnd-1;i++){
         for(int j=0;j<width;j++){
             sum=0;
             int count=0;
             for(int ii=-range;ii<=range;ii++){
                 for(int jj=-range;jj<=range;jj++){
                     if(i+ii<0 || j+jj<0 || i+ii>height-1 || j+jj>width-1){
-                        //matval=127;
                         continue;
                     }else{
                         matval=matrix[(i+ii)*width+(j+jj)];
                     }
                     count++;
-                    sum=sum+gKernel[ii+range][jj+range]*matval;
+                    sum = sum+ gKernel[ii+range][jj+range] * matval;
                 }
             }
-
-            
-            temp[(i - myRowStart) * width + j] = sum;
+            temp[(i * width + j) % temp_dim] = sum;
         }
     }
 
     double endTime=MPI_Wtime();
+
 
     /*
      * TODO 7
      *
      * Use MPI_Gather() to gather all small temp matrices into the full matrix on rank 0
      */
-    MPI_Gather(temp, numrows, MPI_INT, matrix, numrows, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Gather(temp,numrows*width,MPI_INT,matrix,numrows*width,MPI_INT,0,MPI_COMM_WORLD);
 
     double fullend=MPI_Wtime();
 
@@ -157,10 +155,10 @@ int main( int argc, char** argv ) {
 
     //rank 0 writes image to file
     if(rank==0){
+
         printf("Full Time: %5.2f\n",fullend-fullstart);
         matToImage("processedImage.jpg",matrix,dims);
     }
-
     MPI_Finalize();
     return 0;
 }
@@ -175,15 +173,15 @@ void createBFilter(double **bKernel,int size){
             sum += bKernel[x + range][y + range];
         }
     }
-                                                                                             
+
     // normalize the Kernel
     for(int i = 0; i < size; ++i)
         for(int j = 0; j < size; ++j)
             bKernel[i][j] /= sum;
-
 }
 
-void createFilter(double **gKernel,int size) { 
+
+void createFilter(double **gKernel,int size) {
     int range=size/2;
     //set standard deviation to 1.0
     double sigma = 10.0;
@@ -191,7 +189,7 @@ void createFilter(double **gKernel,int size) {
 
     // sum is for normalization
     double sum = 0.0;
-                   
+
     // generate  range x range  kernel
     for (int x = -range; x <= range; x++){
         for(int y = -range; y <= range; y++){
@@ -200,7 +198,7 @@ void createFilter(double **gKernel,int size) {
             sum += gKernel[x + range][y + range];
         }
     }
-                                                                                             
+
     // normalize the Kernel
     for(int i = 0; i < size; ++i)
         for(int j = 0; j < size; ++j)
