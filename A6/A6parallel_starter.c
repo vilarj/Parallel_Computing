@@ -138,7 +138,7 @@ int main( int argc, char** argv ) {
             }
 
             
-            temp[i*width+j]=sum;
+            temp[(i - myRowStart) * width + j] = sum;
         }
     }
 
