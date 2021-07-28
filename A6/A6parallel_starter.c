@@ -147,6 +147,7 @@ int main( int argc, char** argv ) {
      *
      * Use MPI_Gather() to gather all small temp matrices into the full matrix on rank 0
      */
+    // (&mat[mystart * nx], numrows * nx, MPI_INT, mat, numrows * nx, MPI_INT, 0, MPI_COMM_WORLD)
     MPI_Gather(temp, numrows , MPI_INT, matrix, numrows * width, MPI_INT, 0, MPI_COMM_WORLD);
 
     double fullend=MPI_Wtime();
