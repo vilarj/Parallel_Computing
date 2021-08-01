@@ -7,28 +7,8 @@
 
 cd ~/assignments/A9
 export OMP_NUM_THREADS=6;
-echo "--------------------------"
-echo "510 ITERATIONS THIS TIME"
-echo "Starting A9 10 Nodes 6 Threads"
-echo "--------------------------"
+
 mpiexec -np 10 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
-
-echo "--------------------------"
-echo "Starting A9 8 Nodes 6 Threads"
-echo "--------------------------"
-mpiexec -np 8 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
-
-echo "--------------------------"
-echo "Starting A9 6  Nodes 6 Threads"
-echo "--------------------------"
-mpiexec -np 6 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
-
-echo "--------------------------"
-echo "Starting A9 4 Nodes 6 Threads"
-echo "--------------------------"
-mpiexec -np 4 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
-
-echo "--------------------------"
-echo "Starting A9 2 Nodes 6 Threads"
-echo "--------------------------"
-mpiexec -np 2 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
+mpiexec -np 5 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
+mpiexec -np 3 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
+mpiexec -np 1 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
