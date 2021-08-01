@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l nodes=10:ppn=12,walltime=00:05:00
+#PBS -l nodes=10:ppn=12,walltime=00:04:00
 #PBS -q batch
 #PBS -N run_mandelOmpMpi
 #PBS -j oe
@@ -8,7 +8,14 @@
 cd ~/assignments/A9
 export OMP_NUM_THREADS=6;
 
+echo "1o nodes - 12 threads"
 mpiexec -np 10 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
+echo "--------------------------------------------------------------------"
+echo "5 nodes - 12 threads"
 mpiexec -np 5 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
+echo "--------------------------------------------------------------------"
+echo "3 nodes - 12 threads"
 mpiexec -np 3 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
+echo "--------------------------------------------------------------------"
+echo "1 nodes - 12 threads"
 mpiexec -np 1 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
