@@ -1,6 +1,0 @@
-Describe the algorithm that you used to solve the problem.
-Include your final Mandelbrot set image.
-
-Time your application (excluding the saving of your final JPG image) and create a strong scaling plot.
-(Strong scaling concerns the speedup for a fixed problem size with respect to the number of processors). Use 2 to 12 OpenMP threads per node and vary the number of nodes to create the plot.
-There is no need to use TAU profiling
