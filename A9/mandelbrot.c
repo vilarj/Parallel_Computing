@@ -8,7 +8,7 @@ extern void matToImage(char *filename, int *mat, int *dims);
 
 int main(int argc, char **argv)
 {
-    const int MAX_ITERATOR = 510;
+    const int MAX_ITERATOR = 300;
     int *mat;
     int cols = 18000;
     int rows = 12000;

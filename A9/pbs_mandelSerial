@@ -8,6 +8,7 @@
 cd ~/assignments/A9
 export OMP_NUM_THREADS=6;
 
+echo "--------------------------------------------------------------------"
 echo "1o nodes - 12 threads"
 mpiexec -np 10 --map-by ppr:1:node --hostfile $PBS_NODEFILE mandelbrot.cx
 echo "--------------------------------------------------------------------"
